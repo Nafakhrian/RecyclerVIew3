@@ -1,5 +1,7 @@
 package id.sch.smktelkom_mlg.learn.recyclerview3.adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import id.sch.smktelkom_mlg.learn.recyclerview3.R;
 import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
 
+
 /**
  * Created by Win10 on 1/6/2017.
  */
@@ -19,9 +22,11 @@ import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
 public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> {
 
     ArrayList<Hotel> hotelList;
+    IHotelAdapter mIHotelAdapter;
 
-    public HotelAdapter(ArrayList<Hotel> hotelList) {
+    public HotelAdapter(Context context, ArrayList<Hotel> hotelList) {
         this.hotelList = hotelList;
+        mIHotelAdapter = (IHotelAdapter) context;
     }
 
     @Override
@@ -36,7 +41,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
         Hotel hotel = hotelList.get(position);
         holder.tvJudul.setText(hotel.judul);
         holder.tvDeskripsi.setText(hotel.deskripsi);
-        holder.ivFoto.setImageDrawable(hotel.foto);
+        holder.ivFoto.setImageURI(Uri.parse(hotel.foto));
     }
 
     @Override
@@ -46,7 +51,12 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
         return 0;
     }
 
+    public interface IHotelAdapter {
+        void doClick(int Pos);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         ImageView ivFoto;
         TextView tvJudul;
         TextView tvDeskripsi;
@@ -56,6 +66,13 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
             ivFoto = (ImageView) itemView.findViewById(R.id.imageView);
             tvJudul = (TextView) itemView.findViewById(R.id.textViewJudul);
             tvDeskripsi = (TextView) itemView.findViewById(R.id.textViewDeskripsi);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mIHotelAdapter.doClick(getAdapterPosition());
+                }
+            });
         }
     }
 }
