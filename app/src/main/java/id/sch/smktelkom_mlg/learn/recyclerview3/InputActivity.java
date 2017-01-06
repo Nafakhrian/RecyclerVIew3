@@ -1,5 +1,4 @@
 package id.sch.smktelkom_mlg.learn.recyclerview3;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -35,6 +34,14 @@ public class InputActivity extends AppCompatActivity {
         etLokasi = (EditText) findViewById(R.id.editTextLokasi);
         ivFoto = (ImageView) findViewById(R.id.imageViewFoto);
 
+        hotel = (Hotel) getIntent().getSerializableExtra(MainActivity.HOTEL);
+        if (hotel != null) {
+            setTitle("Edit" + hotel.judul);
+            filData();
+        } else {
+            setTitle("New Hotel");
+        }
+
         ivFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +55,15 @@ public class InputActivity extends AppCompatActivity {
                 doSave();
             }
         });
+    }
+
+    private void filData() {
+        etJudul.setText(hotel.judul);
+        etDeskripsi.setText(hotel.deskripsi);
+        etDetail.setText(hotel.detail);
+        etLokasi.setText(hotel.lokasi);
+        uriFoto = Uri.parse(hotel.foto);
+        ivFoto.setImageURI(uriFoto);
     }
 
     private void doSave() {
